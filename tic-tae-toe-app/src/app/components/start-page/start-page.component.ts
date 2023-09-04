@@ -7,4 +7,16 @@ import { Component } from '@angular/core';
 })
 export class StartPageComponent {
 
+  xSelected : boolean = false;
+
+  chooseX(){
+    this.xSelected = true;
+
+  }
+  chooseO(){
+    this.xSelected = false;
+
+  }
+
+
 }
