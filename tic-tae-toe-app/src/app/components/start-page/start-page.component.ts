@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-start-page',
@@ -6,6 +7,8 @@ import { Component } from '@angular/core';
   styleUrls: ['./start-page.component.sass']
 })
 export class StartPageComponent {
+
+  constructor(private router : Router){}
 
   xSelected : boolean = false;
 
@@ -16,6 +19,9 @@ export class StartPageComponent {
   chooseO(){
     this.xSelected = false;
 
+  }
+  newGameVsPc(){
+    this.router.navigateByUrl('/game');
   }
 
 
