@@ -2,3 +2,41 @@
 
 .container
   @include container()
+
+.header
+  display: flex
+  justify-content: space-around
+
+.symbols
+  flex-grow: 1
+  display: flex
+  align-items: center
+
+.turn-info
+  flex-grow: 1
+  display: flex
+  align-items: center
+  background-color: $semi-dark-navy
+  border-radius: 7px
+  box-shadow: 0px 4px black
+
+
+
+.restart
+  flex-grow: 1
+  display: flex
+  align-items: center
+  justify-content: right
+
+.btn
+  @include btn($silver,$silver-shadow, $silver-hover)
+  width: 35px
+  height: 35px
+  border-radius: 7px
+  svg
+    text-align: center
+    margin-top: 10px
+
+
+
+
