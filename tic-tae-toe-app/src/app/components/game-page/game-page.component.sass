@@ -20,7 +20,21 @@
   border-radius: 7px
   box-shadow: 0px 4px black
 
+  &-content
+    display: flex
+    justify-content: right
+    flex-grow: 1
 
+
+
+.turn-info-text
+  font-family: outfit-bold
+  font-size: 14px
+  color: $silver
+  padding-left: 5px
+  letter-spacing: 0.88px
+  flex-grow: 1
+  text-align: left
 
 .restart
   flex-grow: 1
@@ -36,6 +50,47 @@
   svg
     text-align: center
     margin-top: 10px
+
+.game-board
+  margin-top: 65px
+  display: flex
+  flex-wrap: wrap
+  justify-content: space-between
+
+.game-box
+  background-color: $semi-dark-navy
+  width: 90px
+  height: 90px
+  border-radius: 7px
+  box-shadow: 0px 4px black
+  display: flex
+  justify-content: center
+  align-items: center
+  margin: 13px 0px
+
+.game-info
+  margin-top: 20px
+  display: flex
+  flex-wrap: wrap
+  justify-content: space-between
+
+.scoreboard-box
+  width: 90px
+  height: 60px
+  border-radius: 7px
+  display: flex
+  justify-content: center
+  align-items: center
+  margin: 13px 0px
+  text-align: center
+
+  &-you
+    background-color: $light-blue
+  &-ties
+    background-color: $silver
+  &-cpu
+    background-color: $light-yellow
+
 
 
 
