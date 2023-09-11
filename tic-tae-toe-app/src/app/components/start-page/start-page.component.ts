@@ -23,6 +23,7 @@ export class StartPageComponent {
   }
   newGameVsPc(){
     this.gameDataService.player1Mark = (this.xSelected ? 'x' : 'o');
+    this.gameDataService.player2Mark = (this.xSelected ? 'o' : 'x');
     this.router.navigateByUrl('/game');
   }
 
