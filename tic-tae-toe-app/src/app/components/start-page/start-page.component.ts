@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { GameDataService } from 'src/app/services/game-data.service';
 
 @Component({
   selector: 'app-start-page',
@@ -8,7 +9,7 @@ import { Router } from '@angular/router';
 })
 export class StartPageComponent {
 
-  constructor(private router : Router){}
+  constructor(private router : Router, private gameDataService : GameDataService){}
 
   xSelected : boolean = false;
 
@@ -21,6 +22,7 @@ export class StartPageComponent {
 
   }
   newGameVsPc(){
+    this.gameDataService.player1Mark = (this.xSelected ? 'x' : 'o');
     this.router.navigateByUrl('/game');
   }
 

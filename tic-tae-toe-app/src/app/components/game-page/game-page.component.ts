@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { GameDataService } from 'src/app/services/game-data.service';
 
 @Component({
   selector: 'app-game-page',
@@ -7,4 +8,13 @@ import { Component } from '@angular/core';
 })
 export class GamePageComponent {
 
+  constructor(private gameDataService : GameDataService){}
+
+  // public currentTurn() : string{
+  //   return this.gameDataService.turn;
+  // }
+
+  public getGameDataService() : GameDataService{
+    return this.gameDataService;
+  }
 }
