@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, QueryList, ViewChildren } from '@angular/core';
+import { Component, ElementRef, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { Router } from '@angular/router';
 import { GameDataService } from 'src/app/services/game-data.service';
 
@@ -17,11 +17,13 @@ export class GamePageComponent  implements OnInit {
   winPositions : number[][] = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]]
   winnerPosition : number[] = []
   winnerMark : string = "";
+  winnerPlayer : string = "";
   endMatch : boolean = false;
 
 
 
   @ViewChildren("gameBox") boxGameList: QueryList<ElementRef>;
+  @ViewChild("container") container: ElementRef;
 
   constructor(private gameDataService : GameDataService, private router : Router){}
 
@@ -51,7 +53,9 @@ export class GamePageComponent  implements OnInit {
 
       this.endMatch = this.winCheck()
 
-
+      if (this.endMatch){
+        this.container.nativeElement.style.filter =  "blur(10px)";
+      }
 
     }
 
@@ -68,6 +72,7 @@ export class GamePageComponent  implements OnInit {
         result = true;
         this.winnerPosition = p;
         this.winnerMark = 'x';
+        this.winnerPlayer = (this.winnerMark == this.gameDataService.player1Mark) ? 'PLAYER 1' : 'PLAYER 2'
 
         if(this.gameDataService.player1Mark == 'x')
           this.gameDataService.scoreboardPlayer1 += 1;
@@ -79,6 +84,7 @@ export class GamePageComponent  implements OnInit {
         result = true;
         this.winnerPosition = p;
         this.winnerMark = 'o';
+        this.winnerPlayer = (this.winnerMark == this.gameDataService.player1Mark) ? 'PLAYER 1' : 'PLAYER 2'
         if(this.gameDataService.player1Mark == 'o')
           this.gameDataService.scoreboardPlayer1 += 1;
         else
@@ -100,10 +106,12 @@ export class GamePageComponent  implements OnInit {
   public restartGame() {
     this.positionsX  = [];
     this.positionsO  = [];
-    this.winnerPosition  = []
+    this.winnerPosition  = [];
     this.winnerMark = "";
     this.gameDataService.turn = 'x';
     this.endMatch = false;
+    this.container.nativeElement.style.filter =  "blur(0px)";
+    this.winnerPlayer = "";
 
     this.boxGameList.forEach(element => {
       element.nativeElement.innerHTML = "";

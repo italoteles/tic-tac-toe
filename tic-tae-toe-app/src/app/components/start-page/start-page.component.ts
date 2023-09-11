@@ -24,6 +24,13 @@ export class StartPageComponent {
   newGameVsPc(){
     this.gameDataService.player1Mark = (this.xSelected ? 'x' : 'o');
     this.gameDataService.player2Mark = (this.xSelected ? 'o' : 'x');
+    this.gameDataService.player2Cpu = true;
+    this.router.navigateByUrl('/game');
+  }
+  newGameVsPlayer(){
+    this.gameDataService.player1Mark = (this.xSelected ? 'x' : 'o');
+    this.gameDataService.player2Mark = (this.xSelected ? 'o' : 'x');
+    this.gameDataService.player2Cpu = false;
     this.router.navigateByUrl('/game');
   }
 

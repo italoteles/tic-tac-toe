@@ -20,8 +20,8 @@
   margin: auto
   @include breakpoint(tablet)
     width: 460px
-  // @include breakpoint(desktop)
-  //   padding: 15% 0%
+  @include breakpoint(desktop)
+    padding: 5% 0%
 
 @mixin breakpoint($breakpoint)
     $breakpoint-value: map-get($breakpoints, $breakpoint)

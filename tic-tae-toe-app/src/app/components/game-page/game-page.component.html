@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container" #container>
   <div class="header">
     <div class="symbols">
       <svg width="32" height="32" viewBox="0 0 70 70" xmlns="http://www.w3.org/2000/svg">
@@ -40,7 +40,7 @@
 
   <div class="game-info">
     <div class="scoreboard-box scoreboard-box-you">
-      <p>{{getGameDataService().player1Mark}} (YOU):</p>
+      <p>{{getGameDataService().player1Mark.toUpperCase()}} (YOU):</p>
       <p class="scoreboard-number">{{getGameDataService().scoreboardPlayer1}} </p>
     </div>
     <div class="scoreboard-box scoreboard-box-ties">
@@ -48,10 +48,36 @@
       <p class="scoreboard-number">{{getGameDataService().scoreboardTies}} </p>
     </div>
     <div class="scoreboard-box scoreboard-box-cpu">
-      <p>{{getGameDataService().player2Mark}} (CPU):</p>
+      <p>{{getGameDataService().player2Mark.toUpperCase()}} {{(getGameDataService().player2Cpu ? '(CPU):' : '(Player2):')}}</p>
       <p class="scoreboard-number">{{getGameDataService().scoreboardPlayer2}} </p>
     </div>
   </div>
 
+</div>
+
+<div *ngIf="endMatch" class="modal-end-match">
+  <div *ngIf="winnerMark != ''" class="modal-who-wins">
+    {{winnerPlayer}} WINS!
+  </div>
+  <div *ngIf="(winnerMark == 'o')" class="modal-winner-info-o">
+    <svg width="32" height="32" viewBox="0 0 70 70" xmlns="http://www.w3.org/2000/svg">
+      <path d="M32 0c17.673 0 32 14.327 32 32 0 17.673-14.327 32-32 32C14.327 64 0 49.673 0 32 0 14.327 14.327 0 32 0Zm0 18.963c-7.2 0-13.037 5.837-13.037 13.037 0 7.2 5.837 13.037 13.037 13.037 7.2 0 13.037-5.837 13.037-13.037 0-7.2-5.837-13.037-13.037-13.037Z" fill="#F2B137"/>
+    </svg>
+    TAKES THE ROUND
+  </div>
+  <div *ngIf="(winnerMark == 'x')" class="modal-winner-info-x">
+    <svg width="32" height="32" viewBox="0 0 70 70" xmlns="http://www.w3.org/2000/svg">
+      <path d="M15.002 1.147 32 18.145 48.998 1.147a3 3 0 0 1 4.243 0l9.612 9.612a3 3 0 0 1 0 4.243L45.855 32l16.998 16.998a3 3 0 0 1 0 4.243l-9.612 9.612a3 3 0 0 1-4.243 0L32 45.855 15.002 62.853a3 3 0 0 1-4.243 0L1.147 53.24a3 3 0 0 1 0-4.243L18.145 32 1.147 15.002a3 3 0 0 1 0-4.243l9.612-9.612a3 3 0 0 1 4.243 0Z" fill="#31C3BD" fill-rule="evenodd"/>
+    </svg>
+    TAKES THE ROUND
+  </div>
+  <div *ngIf="(winnerMark == '')" class="modal-winner-info-tied">
+    ROUND TIED
+  </div>
+  <div class="modal-buttons">
+    <button class="btn-quit">QUIT</button>
+    <button class="btn-next-round" (click)="restartGame()">NEXT ROUND</button>
+  </div>
 
 </div>
+

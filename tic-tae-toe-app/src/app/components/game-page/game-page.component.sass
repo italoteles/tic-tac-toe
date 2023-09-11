@@ -2,6 +2,7 @@
 
 .container
   @include container()
+  //filter: blur(10px)
 
 .header
   display: flex
@@ -67,6 +68,9 @@
   justify-content: center
   align-items: center
   margin: 13px 0px
+  @include breakpoint(tablet)
+    width: 140px
+    height: 140px
 
 .game-info
   margin-top: 20px
@@ -91,6 +95,78 @@
 .scoreboard-number
   font-family: outfit-bold
   font-size: 20px
+
+.modal-end-match
+  width: 100%
+  height: 228px
+  //background-color: red
+  background-color: $semi-dark-navy
+  position: absolute
+  top: 30%
+
+.modal-who-wins
+  font-family: outfit-bold
+  letter-spacing: 0.88px
+  color: $silver
+  text-align: center
+  margin: 25px 0px
+
+.modal-winner-info-o
+  font-family: outfit-bold
+  font-size: 24px
+  letter-spacing: 1.5px
+  text-align: center
+  margin: 6px 0px
+  color: $light-yellow
+  display: flex
+  justify-content: center
+  svg
+    margin-right: 10px
+
+.modal-winner-info-x
+  font-family: outfit-bold
+  font-size: 24px
+  letter-spacing: 1.5px
+  text-align: center
+  margin: 6px 0px
+  color: $light-blue
+  display: flex
+  justify-content: center
+  svg
+    margin-right: 10px
+
+.modal-winner-info-tied
+  font-family: outfit-bold
+  font-size: 24px
+  letter-spacing: 1.5px
+  text-align: center
+  margin: 6px 0px
+  color: $silver
+  display: flex
+  justify-content: center
+  margin-top: 47px
+
+.modal-buttons
+  display: flex
+  justify-content: center
+
+.btn-quit
+  @include btn($silver,$silver-shadow, $silver-hover)
+  width: 76px
+  height: 52px
+  border-radius: 9px
+  margin: 10px
+
+.btn-next-round
+  @include btn($light-yellow,$light-yellow-shadow, $light-yellow-hover)
+  width: 146px
+  height: 52px
+  border-radius: 9px
+  margin: 10px
+
+
+
+
 
 
 
