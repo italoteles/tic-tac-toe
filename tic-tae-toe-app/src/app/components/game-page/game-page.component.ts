@@ -129,6 +129,15 @@ export class GamePageComponent  implements OnInit {
   }
 
   public quitGame(){
+    this.restartGame();
+    this.gameDataService.player1Mark = "";
+    this.gameDataService.player2Mark = "";
+    this.gameDataService.player2Cpu = false;
+    this.gameDataService.scoreboardPlayer1 = 0;
+    this.gameDataService.scoreboardPlayer2 = 0;
+    this.gameDataService.scoreboardTies = 0;
+    this.gameDataService.turn = 'x';
 
+    this.router.navigateByUrl('/start');
   }
 }

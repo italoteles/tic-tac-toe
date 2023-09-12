@@ -11,7 +11,7 @@ export class StartPageComponent {
 
   constructor(private router : Router, private gameDataService : GameDataService){}
 
-  xSelected : boolean = false;
+  xSelected : boolean = true;
 
   chooseX(){
     this.xSelected = true;
