@@ -140,4 +140,8 @@ export class GamePageComponent  implements OnInit {
 
     this.router.navigateByUrl('/start');
   }
+
+  public pcMove(){
+
+  }
 }
