@@ -30,7 +30,7 @@
   </div>
 
   <div class="game-board">
-    <div *ngFor="let position of positions" class="game-box" id="game-board-{{position}}" #gameBox (click)="markPosition(position, getGameDataService().turn, $event)">
+    <div *ngFor="let position of positions" class="game-box" id="game-board-{{position}}" #gameBox (click)="markPosition(position, $event)" [ngClass]="disableBox ? 'disableDiv' : ''">
 
     </div>
 
@@ -55,7 +55,7 @@
 
 </div>
 
-<div *ngIf="endMatch" class="modal-match">
+<div *ngIf="modalEndMatch" class="modal-match">
   <div *ngIf="winnerMark != ''" class="modal-who-wins">
     {{winnerPlayer}} WINS!
   </div>

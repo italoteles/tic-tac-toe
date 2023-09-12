@@ -1,5 +1,6 @@
-import { Component, ElementRef, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import { Component, ElementRef, OnInit, QueryList, ViewChild, ViewChildren} from '@angular/core';
 import { Router } from '@angular/router';
+import { repeat } from 'rxjs';
 import { GameDataService } from 'src/app/services/game-data.service';
 
 @Component({
@@ -20,6 +21,8 @@ export class GamePageComponent  implements OnInit {
   winnerPlayer : string = "";
   endMatch : boolean = false;
   modalRestartMatch : boolean = false;
+  disableBox : boolean = false;
+  modalEndMatch : boolean;
 
 
 
@@ -33,32 +36,87 @@ export class GamePageComponent  implements OnInit {
     if (this.gameDataService.player1Mark == ""){
       this.router.navigateByUrl('/start');
     }
+
+    if ((this.gameDataService.player2Cpu) && (this.gameDataService.player2Mark=='x')){
+
+      this.markPosition(null,null);
+    }
+
   }
 
   public getGameDataService() : GameDataService{
     return this.gameDataService;
   }
 
-  public markPosition(position : number, player : string, event : Event){
-    if ((this.positionsX.indexOf(position) == -1) && (this.positionsO.indexOf(position) == -1) && (this.endMatch == false)){
-      if (player === 'x'){
-        this.positionsX.push(position);
-        this.gameDataService.turn = 'o';
-        (event.target as Element).innerHTML = this.svgX;
-      }else{
-        this.positionsO.push(position);
-        this.gameDataService.turn = 'x';
-        (event.target as Element).innerHTML = this.svgO;
+  public markPosition(position : number, event : Event){
+
+
+    let playerTurn : string = this.gameDataService.turn;
+
+
+    if (((this.gameDataService.player2Cpu) && (playerTurn === this.gameDataService.player1Mark)) || (this.gameDataService.player2Cpu == false)){
+      if ((this.positionsX.indexOf(position) == -1) && (this.positionsO.indexOf(position) == -1) && (this.endMatch == false)){
+
+        if (playerTurn === 'x'){
+          this.positionsX.push(position);
+          (event.target as Element).innerHTML = this.svgX;
+          this.gameDataService.turn = 'o';
+        }else{
+          this.positionsO.push(position);
+          (event.target as Element).innerHTML = this.svgO;
+          this.gameDataService.turn = 'x';
+        }
+
       }
+    }
 
-
-      this.endMatch = this.winCheck()
-
-      if (this.endMatch){
+    this.endMatch = this.winCheck()
+    if (this.endMatch){
+      setTimeout(() => {
+        this.modalEndMatch = this.endMatch;
         this.container.nativeElement.style.filter =  "blur(10px)";
+      },1500);
+    }
+
+    if (((this.gameDataService.player2Cpu) && (playerTurn === this.gameDataService.player1Mark) && (this.endMatch == false)) || (event == null))
+    {
+      this.disableBox = true;
+      setTimeout(() => {
+        let validPosition = this.pcValidPosition();
+
+        let boxGame : ElementRef = this.boxGameList.find(element => {
+          return element.nativeElement.id == 'game-board-'+validPosition
+        });
+
+
+
+        if (this.gameDataService.turn === 'x'){
+          this.positionsX.push(validPosition);
+          this.gameDataService.turn = 'o';
+          boxGame.nativeElement.innerHTML = this.svgX;
+        }else{
+          this.positionsO.push(validPosition);
+          this.gameDataService.turn = 'x';
+          boxGame.nativeElement.innerHTML =  this.svgO;
       }
+      if (this.endMatch == false){
+        this.endMatch = this.winCheck()
+        if (this.endMatch){
+          setTimeout(() => {
+            this.modalEndMatch = this.endMatch;
+            this.container.nativeElement.style.filter =  "blur(10px)";
+          },1500);
+        }
+      }
+
+      }, 1000);
+
+      this.disableBox = false;
+
 
     }
+
+
 
 
   }
@@ -67,36 +125,45 @@ export class GamePageComponent  implements OnInit {
     let result : boolean = false;
 
 
-    this.winPositions.forEach(p => {
+    for (let index = 0; index < this.winPositions.length; index++)
+    {
+      let p : number[] = this.winPositions[index];
       if (p.every(element =>
         this.positionsX.includes(element))){
-        result = true;
-        this.winnerPosition = p;
-        this.winnerMark = 'x';
-        this.winnerPlayer = (this.winnerMark == this.gameDataService.player1Mark) ? 'PLAYER 1' : 'PLAYER 2'
+          result = true;
+          this.winnerPosition = p;
+          this.winnerMark = 'x';
+          this.winnerPlayer = (this.winnerMark == this.gameDataService.player1Mark) ? 'PLAYER 1' : 'PLAYER 2'
 
-        if(this.gameDataService.player1Mark == 'x')
-          this.gameDataService.scoreboardPlayer1 += 1;
-        else
-          this.gameDataService.scoreboardPlayer2 += 1;
+          if(this.gameDataService.player1Mark == 'x')
+            this.gameDataService.scoreboardPlayer1 += 1;
+          else
+            this.gameDataService.scoreboardPlayer2 += 1;
+          break;
+
       }
       if (p.every(element =>
         this.positionsO.includes(element))){
-        result = true;
-        this.winnerPosition = p;
-        this.winnerMark = 'o';
-        this.winnerPlayer = (this.winnerMark == this.gameDataService.player1Mark) ? 'PLAYER 1' : 'PLAYER 2'
-        if(this.gameDataService.player1Mark == 'o')
-          this.gameDataService.scoreboardPlayer1 += 1;
-        else
-          this.gameDataService.scoreboardPlayer2 += 1;
+          result = true;
+          this.winnerPosition = p;
+          this.winnerMark = 'o';
+          this.winnerPlayer = (this.winnerMark == this.gameDataService.player1Mark) ? 'PLAYER 1' : 'PLAYER 2'
+          if(this.gameDataService.player1Mark == 'o')
+            this.gameDataService.scoreboardPlayer1 += 1;
+          else
+            this.gameDataService.scoreboardPlayer2 += 1;
+          break;
       }
 
-    });
+    };
 
     if ((this.positionsO.length + this.positionsX.length == 9) && (this.winnerMark == "")){
       this.gameDataService.scoreboardTies += 1;
       result = true
+    }
+
+    if (result){
+      this.paintWinnerPosition();
     }
 
     return result;
@@ -120,12 +187,19 @@ export class GamePageComponent  implements OnInit {
     this.winnerMark = "";
     this.gameDataService.turn = 'x';
     this.endMatch = false;
+    this.modalEndMatch = false
     this.container.nativeElement.style.filter =  "blur(0px)";
     this.winnerPlayer = "";
 
     this.boxGameList.forEach(element => {
       element.nativeElement.innerHTML = "";
+      element.nativeElement.style = 'background-color: $semi-dark-navy'
     });
+
+    if ((this.gameDataService.player2Cpu) && (this.gameDataService.player2Mark=='x')){
+
+      this.markPosition(null,null);
+    }
   }
 
   public quitGame(){
@@ -141,7 +215,39 @@ export class GamePageComponent  implements OnInit {
     this.router.navigateByUrl('/start');
   }
 
-  public pcMove(){
+  public pcValidPosition() : number{
 
+    let randomPosition : number;
+    let validPosition : boolean = false;
+
+    for (let index = 0; validPosition == false; index++) {
+      randomPosition = Math.floor(Math.random() * 9);
+      if ((this.positionsX.indexOf(randomPosition) == -1) && (this.positionsO.indexOf(randomPosition) == -1)){
+        validPosition = true;
+      }
+    }
+
+    return randomPosition;
   }
+
+  public paintWinnerPosition(){
+    if (this.winnerPosition.length){
+
+      this.winnerPosition.forEach(position => {
+        let boxGame : ElementRef = this.boxGameList.find(element => {
+          return element.nativeElement.id == 'game-board-'+position
+        });
+
+        boxGame.nativeElement.style = 'background-color: green'
+
+      });
+
+
+
+    }
+  }
+
+
+
 }
+
