@@ -50,73 +50,73 @@ export class GamePageComponent  implements OnInit {
 
   public markPosition(position : number, event : Event){
 
-
-    let playerTurn : string = this.gameDataService.turn;
-
-
-    if (((this.gameDataService.player2Cpu) && (playerTurn === this.gameDataService.player1Mark)) || (this.gameDataService.player2Cpu == false)){
-      if ((this.positionsX.indexOf(position) == -1) && (this.positionsO.indexOf(position) == -1) && (this.endMatch == false)){
-
-        if (playerTurn === 'x'){
-          this.positionsX.push(position);
-          (event.target as Element).innerHTML = this.svgX;
-          this.gameDataService.turn = 'o';
-        }else{
-          this.positionsO.push(position);
-          (event.target as Element).innerHTML = this.svgO;
-          this.gameDataService.turn = 'x';
-        }
-
-      }
-    }
-
-    this.endMatch = this.winCheck()
-    if (this.endMatch){
-      setTimeout(() => {
-        this.modalEndMatch = this.endMatch;
-        this.container.nativeElement.style.filter =  "blur(10px)";
-      },1500);
-    }
-
-    if (((this.gameDataService.player2Cpu) && (playerTurn === this.gameDataService.player1Mark) && (this.endMatch == false)) || (event == null))
-    {
-      this.disableBox = true;
-      setTimeout(() => {
-        let validPosition = this.pcValidPosition();
-
-        let boxGame : ElementRef = this.boxGameList.find(element => {
-          return element.nativeElement.id == 'game-board-'+validPosition
-        });
+    if (this.endMatch == false){
+      let playerTurn : string = this.gameDataService.turn;
 
 
+      if (((this.gameDataService.player2Cpu) && (playerTurn === this.gameDataService.player1Mark)) || (this.gameDataService.player2Cpu == false)){
+        if ((this.positionsX.indexOf(position) == -1) && (this.positionsO.indexOf(position) == -1) && (this.endMatch == false)){
 
-        if (this.gameDataService.turn === 'x'){
-          this.positionsX.push(validPosition);
-          this.gameDataService.turn = 'o';
-          boxGame.nativeElement.innerHTML = this.svgX;
-        }else{
-          this.positionsO.push(validPosition);
-          this.gameDataService.turn = 'x';
-          boxGame.nativeElement.innerHTML =  this.svgO;
-      }
-      if (this.endMatch == false){
-        this.endMatch = this.winCheck()
-        if (this.endMatch){
-          setTimeout(() => {
-            this.modalEndMatch = this.endMatch;
-            this.container.nativeElement.style.filter =  "blur(10px)";
-          },1500);
+          if (playerTurn === 'x'){
+            this.positionsX.push(position);
+            (event.target as Element).innerHTML = this.svgX;
+            this.gameDataService.turn = 'o';
+          }else{
+            this.positionsO.push(position);
+            (event.target as Element).innerHTML = this.svgO;
+            this.gameDataService.turn = 'x';
+          }
+
         }
       }
 
-      }, 1000);
+      this.endMatch = this.winCheck()
+      if (this.endMatch){
+        setTimeout(() => {
+          this.modalEndMatch = this.endMatch;
+          this.container.nativeElement.style.filter =  "blur(10px)";
+        },1500);
+      }
 
-      this.disableBox = false;
+      if (((this.gameDataService.player2Cpu) && (playerTurn === this.gameDataService.player1Mark) && (this.endMatch == false)) || (event == null))
+      {
+        this.disableBox = true;
+        setTimeout(() => {
+          let validPosition = this.pcValidPosition();
+
+          let boxGame : ElementRef = this.boxGameList.find(element => {
+            return element.nativeElement.id == 'game-board-'+validPosition
+          });
 
 
-    }
+
+          if (this.gameDataService.turn === 'x'){
+            this.positionsX.push(validPosition);
+            this.gameDataService.turn = 'o';
+            boxGame.nativeElement.innerHTML = this.svgX;
+          }else{
+            this.positionsO.push(validPosition);
+            this.gameDataService.turn = 'x';
+            boxGame.nativeElement.innerHTML =  this.svgO;
+        }
+        if (this.endMatch == false){
+          this.endMatch = this.winCheck()
+          if (this.endMatch){
+            setTimeout(() => {
+              this.modalEndMatch = this.endMatch;
+              this.container.nativeElement.style.filter =  "blur(10px)";
+            },1500);
+          }
+        }
+
+        }, 1000);
+
+        this.disableBox = false;
 
 
+      }
+
+  }
 
 
   }
