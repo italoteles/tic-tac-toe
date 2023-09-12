@@ -19,6 +19,7 @@ export class GamePageComponent  implements OnInit {
   winnerMark : string = "";
   winnerPlayer : string = "";
   endMatch : boolean = false;
+  modalRestartMatch : boolean = false;
 
 
 
@@ -102,8 +103,17 @@ export class GamePageComponent  implements OnInit {
 
 
   }
+  public cancel(){
+    this.modalRestartMatch = false;
+    this.container.nativeElement.style.filter =  "blur(0px)";
+  }
+  public confirmRestart(){
+    this.modalRestartMatch = true;
+    this.container.nativeElement.style.filter =  "blur(10px)";
+  }
 
   public restartGame() {
+    this.modalRestartMatch = false;
     this.positionsX  = [];
     this.positionsO  = [];
     this.winnerPosition  = [];
